@@ -20,3 +20,36 @@ export function formatToSocialStyleNumber(input: number): string {
 
 export const rateSale = (original: number, saleNumber: number) =>
   Math.round(((original - saleNumber) / original) * 100) + '%';
+
+/**
+ * Remove special character from productName
+ * @param str string
+ * @returns string without special character
+ */
+export const removeSpecialCharacter = (str: string) =>
+  // Fix ESlint
+  // eslint-disable-next-line no-useless-escape
+  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '');
+
+/**
+ * @summary
+ *  Input: This Is My Product *Name*
+ *  Output: This-Is-My-Product-Name-id,{id}
+ * @param name string
+ * @param id string
+ * @returns string
+ */
+export const generateSEOPathName = (name: string, id: string) => {
+  return removeSpecialCharacter(name).replace(/\s/g, '-').concat('-id,') + `${id}`;
+};
+
+/**
+ * Get productId from SEO path name
+ * @param name SEOPathName
+ * @returns productId
+ */
+export const getIdFromPathName = (name: string) => {
+  const string = name.split('-id,');
+
+  return string[1];
+};
