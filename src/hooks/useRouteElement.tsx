@@ -8,6 +8,7 @@ import Login from 'src/pages/Login';
 import ProductList from 'src/pages/ProductList';
 import ProductDetails from 'src/pages/ProductList/components/ProductDetails';
 import Profile from 'src/pages/Profile';
+import Register from 'src/pages/Register';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
@@ -42,29 +43,16 @@ export default function useRouteElement() {
       element: <RejectedRoute />,
       children: [
         {
-          path: path.login,
+          path: path.register,
           element: (
             <RegisterLayout>
-              <Login />
+              <Register />
             </RegisterLayout>
           )
         }
       ]
     },
-    {
-      path: path.home,
-      element: <RejectedRoute />,
-      children: [
-        {
-          path: path.productDetails,
-          element: (
-            <MainLayout>
-              <ProductDetails />
-            </MainLayout>
-          )
-        }
-      ]
-    },
+
     {
       path: path.home,
       element: <ProtectedRoute />,
@@ -78,6 +66,14 @@ export default function useRouteElement() {
           )
         }
       ]
+    },
+    {
+      path: path.productDetails,
+      element: (
+        <MainLayout>
+          <ProductDetails />
+        </MainLayout>
+      )
     },
     {
       path: path.home,

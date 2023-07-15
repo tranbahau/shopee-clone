@@ -1,5 +1,5 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import Popover from '../Popover';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,11 @@ import useQueryConfig from 'src/hooks/useQueryConfig';
 import { Schema, schema } from 'src/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { omit } from 'lodash';
+import { purchaseSts } from 'src/constant/purchase';
+import purchaseApi from 'src/api/purchase.api';
+import { formatCurrency } from 'src/utils/util';
+import noProduct from 'src/assets/images/noProduct.png';
+import { Purchase } from 'src/types/purchase.types';
 
 type FormData = Pick<Schema, 'name'>;
 const nameSchema = schema.pick(['name']);
@@ -17,6 +22,7 @@ const nameSchema = schema.pick(['name']);
 export default function Header() {
   const queryConfig = useQueryConfig();
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AppContext);
   const { setIsAuthenticated, profile } = useContext(AppContext);
   const { register, handleSubmit } = useForm<FormData>({ resolver: yupResolver(nameSchema) });
 
@@ -50,6 +56,23 @@ export default function Header() {
   const onLogOut = () => {
     logOutAccountMutation.mutate();
   };
+
+  // const { data: purchasesData } = useQuery({
+  //   queryKey: ['purchases', { status: purchaseSts.inCart }],
+  //   queryFn: () => purchaseApi.getPurchases({ status: purchaseSts.inCart }),
+  //   enabled: isAuthenticated
+  // });
+  const { data: purchasesInCartData } = useQuery({
+    queryKey: ['purchases', { status: purchaseSts.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchaseSts.inCart }),
+    enabled: isAuthenticated
+  });
+
+  const purchasesInCart = purchasesInCartData?.data.data;
+
+  // const purchaseInCart = purchasesData?.data.data;
+
+  const purchaseInCart: Purchase[] = [];
 
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
@@ -169,72 +192,42 @@ export default function Header() {
           <div className='col-span-1 justify-self-start'>
             <Popover
               renderPopover={
-                <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
-                  <div className='p-2'>
-                    <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
-                    <div className='mt-5'>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/d427c23e3889e44cda8a892a89346575_tn'
-                            alt='product-img'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Combo Luyện Thi Năng Lực Tiếng Nhật N4 Nghe hiểu - Ngữ pháp - Hán tự Shin kanzen
-                            masuta Lẻ tùy chọn
+                <div className='relative max-w-[450px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                  {purchasesInCart && purchasesInCart.length > 0 ? (
+                    <div className='p-2'>
+                      <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                      <div className='mt-5'>
+                        {purchasesInCart.slice(0, 5).map((purchaseItem) => (
+                          <div className='mt-4 flex' key={purchaseItem._id}>
+                            <div className='flex-shrink-0'>
+                              <img
+                                src={purchaseItem.product.image}
+                                alt='product-img'
+                                className='h-11 w-11 object-cover'
+                              />
+                            </div>
+                            <div className='ml-2 flex-grow overflow-hidden'>
+                              <div className='truncate'>{purchaseItem.product.name}</div>
+                            </div>
+                            <div className='ml-2 flex-shrink-0'>
+                              <div className='text-orange'>₫{formatCurrency(purchaseItem.price)}</div>
+                            </div>
                           </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <div className='text-orange'>₫119.000</div>
-                        </div>
+                        ))}
                       </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/d427c23e3889e44cda8a892a89346575_tn'
-                            alt='product-img'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Combo Luyện Thi Năng Lực Tiếng Nhật N4 Nghe hiểu - Ngữ pháp - Hán tự Shin kanzen
-                            masuta Lẻ tùy chọn
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <div className='text-orange'>₫119.000</div>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/d427c23e3889e44cda8a892a89346575_tn'
-                            alt='product-img'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Combo Luyện Thi Năng Lực Tiếng Nhật N4 Nghe hiểu - Ngữ pháp - Hán tự Shin kanzen
-                            masuta Lẻ tùy chọn
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <div className='text-orange'>₫119.000</div>
-                        </div>
+                      <div className='mt-6 flex items-center justify-between'>
+                        <div className='text-gray text-xs capitalize text-gray-500'>Thêm hàng vào giỏ</div>
+                        <button className='bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-80'>
+                          Xem giỏ hàng
+                        </button>
                       </div>
                     </div>
-                    <div className='mt-6 flex items-center justify-between'>
-                      <div className='text-gray text-xs capitalize text-gray-500'>Thêm hàng vào giỏ</div>
-                      <button className='bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-80'>
-                        Xem giỏ hàng
-                      </button>
+                  ) : (
+                    <div className='flex h-[300px] w-[450px] flex-col items-center justify-center p-2 text-center '>
+                      <img src={noProduct} alt='no purchase' className='h-24 w-24' />
+                      <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                     </div>
-                  </div>
+                  )}
                 </div>
               }
             >
