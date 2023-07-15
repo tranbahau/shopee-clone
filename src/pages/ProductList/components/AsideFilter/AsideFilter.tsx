@@ -1,7 +1,7 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom';
 import Button from 'src/components/Button';
 import { path } from 'src/constant/path';
-import { QueryConfig } from '../../ProductList';
+import { QueryConfig } from 'src/hooks/useQueryConfig';
 import { Category } from 'src/types/category.types';
 import classNames from 'classnames';
 import InputNumber from 'src/components/InputNumber';
@@ -11,6 +11,7 @@ import { Schema, schema } from 'src/utils/rules';
 import { NonNullUndefinedType } from 'src/types/utils.type';
 import RatingStars from '../RatingStars';
 import { omit } from 'lodash';
+import { ObjectSchema } from 'yup';
 
 interface Props {
   queryConfig: QueryConfig;
@@ -19,7 +20,7 @@ interface Props {
 
 type FormData = NonNullUndefinedType<Pick<Schema, 'price_max' | 'price_min'>>;
 
-const priceSchema = schema.pick(['price_max', 'price_min']);
+const priceSchema = schema.pick(['price_max', 'price_min']) as ObjectSchema<FormData>;
 
 export default function AsideFilter({ queryConfig, categories }: Props) {
   const {

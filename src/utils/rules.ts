@@ -94,7 +94,8 @@ export const schema = yub.object({
     name: 'price-not-allowed',
     message: 'Giá không phù hợp',
     test: testPriceMinMax
-  })
+  }),
+  name: yub.string().trim().required()
 });
 
 export type Schema = yub.InferType<typeof schema>;

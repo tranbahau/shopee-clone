@@ -1,18 +1,50 @@
-import { Link } from 'react-router-dom';
-import Popover from '../Popover';
+import { Link, createSearchParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import authApi from 'src/api/auth.api';
 import { useContext } from 'react';
+import Popover from '../Popover';
+import { useForm } from 'react-hook-form';
+import authApi from 'src/api/auth.api';
 import AppContext from 'src/context/app.context';
 import { path } from 'src/constant/path';
+import useQueryConfig from 'src/hooks/useQueryConfig';
+import { Schema, schema } from 'src/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { omit } from 'lodash';
+
+type FormData = Pick<Schema, 'name'>;
+const nameSchema = schema.pick(['name']);
 
 export default function Header() {
+  const queryConfig = useQueryConfig();
+  const navigate = useNavigate();
   const { setIsAuthenticated, profile } = useContext(AppContext);
+  const { register, handleSubmit } = useForm<FormData>({ resolver: yupResolver(nameSchema) });
+
   const logOutAccountMutation = useMutation({
     mutationFn: authApi.logoutAccount,
     onSuccess: () => {
       setIsAuthenticated(false);
     }
+  });
+
+  const handleSearchProduct = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryConfig,
+          name: data.name
+        };
+
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(config).toString()
+    });
   });
 
   const onLogOut = () => {
@@ -110,8 +142,13 @@ export default function Header() {
                 type='text'
                 className='flex-grow border-none bg-transparent px-3 py-2 text-black outline-none'
                 placeholder='Free Ship Đơn Từ 0Đ'
+                {...register('name')}
               />
-              <button className='flex-shrink-0 rounded-sm bg-orange px-6 py-2 hover:opacity-90'>
+              <button
+                type='submit'
+                className='flex-shrink-0 rounded-sm bg-orange px-6 py-2 hover:opacity-90'
+                onClick={handleSearchProduct}
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
