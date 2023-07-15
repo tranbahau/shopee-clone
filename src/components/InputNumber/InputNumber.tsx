@@ -1,13 +1,13 @@
 import { InputHTMLAttributes, forwardRef } from 'react';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errorMessage?: string;
   classNameError?: string;
   classNameInput?: string;
 }
 
-const InputNumber = forwardRef<HTMLInputElement, Props>(function InputNumberInner(
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumberInner(
   {
     className,
     errorMessage,
