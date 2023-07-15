@@ -5,8 +5,9 @@ import { useParams } from 'react-router-dom';
 import productApi from 'src/api/product.api';
 import InputNumber from 'src/components/InputNumber';
 import ProductRating from 'src/components/ProductRating';
-import { Product } from 'src/types/product.types';
+import { Product, ProductListConfig } from 'src/types/product.types';
 import { formatCurrency, formatToSocialStyleNumber, getIdFromPathName, rateSale } from 'src/utils/util';
+import ProductItem from '../ProductItem';
 
 export default function ProductDetails() {
   const { nameId } = useParams();
@@ -72,6 +73,21 @@ export default function ProductDetails() {
   const handleRemoveZoom = () => {
     imageRef.current?.removeAttribute('style');
   };
+
+  const queryConfig: ProductListConfig = {
+    limit: '20',
+    page: '1',
+    category: product?.category._id
+  };
+
+  const { data: productsData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => {
+      return productApi.getProducts(queryConfig);
+    },
+    enabled: Boolean(product),
+    staleTime: 1 * 60 * 1000
+  });
 
   if (!product) return null;
 
@@ -239,6 +255,18 @@ export default function ProductDetails() {
               <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }} />
             </div>
           </div>
+        </div>
+
+        <div className='mt-6 bg-white p-4 shadow'>
+          {productsData && (
+            <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+              {productsData.data.data.products.map((product) => (
+                <div className='col-span-1' key={product._id}>
+                  <ProductItem product={product} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
