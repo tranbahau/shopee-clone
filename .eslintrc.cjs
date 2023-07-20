@@ -32,6 +32,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-no-target-blank': 'warn',
+    'no-console': 'warn',
     'prettier/prettier': [
       'warn',
       {
