@@ -14,7 +14,6 @@ import { purchaseSts } from 'src/constant/purchase';
 import purchaseApi from 'src/api/purchase.api';
 import { formatCurrency } from 'src/utils/util';
 import noProduct from 'src/assets/images/noProduct.png';
-import { Purchase } from 'src/types/purchase.types';
 
 type FormData = Pick<Schema, 'name'>;
 const nameSchema = schema.pick(['name']);
@@ -57,11 +56,6 @@ export default function Header() {
     logOutAccountMutation.mutate();
   };
 
-  // const { data: purchasesData } = useQuery({
-  //   queryKey: ['purchases', { status: purchaseSts.inCart }],
-  //   queryFn: () => purchaseApi.getPurchases({ status: purchaseSts.inCart }),
-  //   enabled: isAuthenticated
-  // });
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchaseSts.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchaseSts.inCart }),
@@ -69,10 +63,6 @@ export default function Header() {
   });
 
   const purchasesInCart = purchasesInCartData?.data.data;
-
-  // const purchaseInCart = purchasesData?.data.data;
-
-  const purchaseInCart: Purchase[] = [];
 
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
@@ -198,7 +188,7 @@ export default function Header() {
                       <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
                       <div className='mt-5'>
                         {purchasesInCart.slice(0, 5).map((purchaseItem) => (
-                          <div className='mt-4 flex' key={purchaseItem._id}>
+                          <div className=' mt-4 flex hover:bg-gray-100' key={purchaseItem._id}>
                             <div className='flex-shrink-0'>
                               <img
                                 src={purchaseItem.product.image}
@@ -216,8 +206,15 @@ export default function Header() {
                         ))}
                       </div>
                       <div className='mt-6 flex items-center justify-between'>
-                        <div className='text-gray text-xs capitalize text-gray-500'>Thêm hàng vào giỏ</div>
-                        <button className='bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-80'>
+                        <div className='text-gray text-xs capitalize text-gray-500'>
+                          {purchasesInCart.length > 5 ? purchasesInCart.length - 5 : ''} Thêm vào giỏ hàng
+                        </div>
+                        <button
+                          onClick={() => {
+                            navigate(path.cart);
+                          }}
+                          className='bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-80'
+                        >
                           Xem giỏ hàng
                         </button>
                       </div>
@@ -246,6 +243,11 @@ export default function Header() {
                     d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
                   />
                 </svg>
+                {purchasesInCart && purchasesInCart?.length > 0 && (
+                  <div className='absolute left-[20px] top-[-5px] rounded-full bg-white px-[7px] py-[1px] text-xs text-orange'>
+                    {purchasesInCart.length}
+                  </div>
+                )}
               </Link>
             </Popover>
           </div>

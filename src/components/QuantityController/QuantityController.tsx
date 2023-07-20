@@ -14,7 +14,7 @@ export default function QuantityController({
   onDecrease,
   onType,
   value,
-  classNameWrapper = 'flex items-center'
+  classNameWrapper = 'ml-10'
 }: Props) {
   const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value);
@@ -50,47 +50,45 @@ export default function QuantityController({
   };
 
   return (
-    <div className={classNameWrapper}>
-      <div className='ml-10 flex items-center'>
-        <button
-          onClick={onDecreaseClick}
-          className='flex h-5 w-5 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+    <div className={classNameWrapper + ' flex items-center'}>
+      <button
+        onClick={onDecreaseClick}
+        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className='h-4 w-4'
         >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={1.5}
-            stroke='currentColor'
-            className='h-5 w-5'
-          >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
-          </svg>
-        </button>
-      </div>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
+        </svg>
+      </button>
+
       <InputNumber
         value={value}
         onChange={onHandleChange}
         classNameError='hidden'
-        classNameInput='h-6 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
+        classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
       />
-      <div className='mr-10 flex items-center'>
-        <button
-          onClick={onIncreaseClick}
-          className='flex h-5 w-5 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+
+      <button
+        onClick={onIncreaseClick}
+        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className='h-4 w-4'
         >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={1.5}
-            stroke='currentColor'
-            className='h-5 w-5'
-          >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
-          </svg>
-        </button>
-      </div>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
+        </svg>
+      </button>
     </div>
   );
 }

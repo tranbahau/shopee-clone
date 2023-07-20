@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import DOMPurify from 'dompurify';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
