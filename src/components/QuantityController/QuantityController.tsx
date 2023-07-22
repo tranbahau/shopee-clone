@@ -5,6 +5,7 @@ interface Props extends InputNumberProps {
   onIncrease?: (value: number) => void;
   onDecrease?: (value: number) => void;
   onType?: (value: number) => void;
+  onFocusOut?: (value: number) => void;
   classNameWrapper?: string;
 }
 
@@ -13,6 +14,8 @@ export default function QuantityController({
   onIncrease,
   onDecrease,
   onType,
+  disabled,
+  onFocusOut,
   value,
   classNameWrapper = 'ml-10'
 }: Props) {
@@ -49,10 +52,15 @@ export default function QuantityController({
     onDecrease && onDecrease(_value);
   };
 
+  const handleOnFocusOut = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut && onFocusOut(Number(event.target.value));
+  };
+
   return (
     <div className={classNameWrapper + ' flex items-center'}>
       <button
         onClick={onDecreaseClick}
+        disabled={disabled}
         className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
       >
         <svg
@@ -69,13 +77,16 @@ export default function QuantityController({
 
       <InputNumber
         value={value}
+        disabled={disabled}
         onChange={onHandleChange}
+        onBlur={handleOnFocusOut}
         classNameError='hidden'
         classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
       />
 
       <button
         onClick={onIncreaseClick}
+        disabled={disabled}
         className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
       >
         <svg
