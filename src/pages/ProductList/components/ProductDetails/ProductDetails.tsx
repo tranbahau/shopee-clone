@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import DOMPurify from 'dompurify';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import productApi from 'src/api/product.api';
 import ProductRating from 'src/components/ProductRating';
 import { Product, ProductListConfig } from 'src/types/product.types';
@@ -10,9 +10,11 @@ import ProductItem from '../ProductItem';
 import QuantityController from 'src/components/QuantityController';
 import purchaseApi from 'src/api/purchase.api';
 import { purchaseSts } from 'src/constant/purchase';
+import { path } from 'src/constant/path';
 
 export default function ProductDetails() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { nameId } = useParams();
   const id = getIdFromPathName(nameId as string);
   const { data: productDetails } = useQuery({
@@ -108,6 +110,22 @@ export default function ProductDetails() {
         }
       }
     );
+  };
+
+  const buyNow = async () => {
+    const resp = await addToCartMutation.mutateAsync(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['purchases', { status: purchaseSts.inCart }]
+          });
+        }
+      }
+    );
+
+    const purchaseId = resp.data.data._id;
+    navigate(path.cart, { state: { purchaseId: purchaseId } });
   };
 
   if (!product) return null;
@@ -239,7 +257,10 @@ export default function ProductDetails() {
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
-                <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  onClick={buyNow}
+                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                >
                   Mua ngay
                 </button>
               </div>

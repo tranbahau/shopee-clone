@@ -1,48 +1,20 @@
-import { Link, createSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import Popover from '../Popover';
-import { useForm } from 'react-hook-form';
 import AppContext from 'src/context/app.context';
 import { path } from 'src/constant/path';
-import useQueryConfig from 'src/hooks/useQueryConfig';
-import { Schema, schema } from 'src/utils/rules';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { omit } from 'lodash';
 import { purchaseSts } from 'src/constant/purchase';
 import purchaseApi from 'src/api/purchase.api';
 import { formatCurrency } from 'src/utils/util';
 import noProduct from 'src/assets/images/noProduct.png';
 import NavHeader from '../NavHeader';
-
-type FormData = Pick<Schema, 'name'>;
-const nameSchema = schema.pick(['name']);
+import useSearchProducts from 'src/hooks/useSearchProducts';
 
 export default function Header() {
-  const queryConfig = useQueryConfig();
+  const { handleSearchProduct, register } = useSearchProducts();
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AppContext);
-  const { register, handleSubmit } = useForm<FormData>({ resolver: yupResolver(nameSchema) });
-
-  const handleSearchProduct = handleSubmit((data) => {
-    const config = queryConfig.order
-      ? omit(
-          {
-            ...queryConfig,
-            name: data.name
-          },
-          ['order', 'sort_by']
-        )
-      : {
-          ...queryConfig,
-          name: data.name
-        };
-
-    navigate({
-      pathname: path.home,
-      search: createSearchParams(config).toString()
-    });
-  });
 
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchaseSts.inCart }],
