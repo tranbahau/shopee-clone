@@ -28,7 +28,8 @@ module.exports = {
           paddingRight: theme('spacing.4')
         }
       });
-    }),
-    require('@tailwindcss/line-clamp')
+    })
+    // As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
+    // require('@tailwindcss/line-clamp')
   ]
 };
