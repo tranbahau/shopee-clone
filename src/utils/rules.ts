@@ -100,12 +100,13 @@ export const schema = yub.object({
 
 export const userSchema = yub.object({
   name: yub.string().max(160, 'Độ dài tối đa là 160 kí tự'),
-  phone: yub.string().max(20, 'Độ dài tối đa là 20 kí tự'),
+  phone: yub.string(),
   address: yub.string().max(160, 'Độ dài tối đa là 160 kí tự'),
   date_of_birth: yub.date().max(new Date(), 'Hãy chọn một ngày trong quá khứ'),
   password: schema.fields['password'],
   new_password: schema.fields['password'],
-  confirm_password: schema.fields['confirm_password']
+  confirm_password: schema.fields['confirm_password'],
+  avatar: yub.string().max(1000)
 });
 
 export type Schema = yub.InferType<typeof schema>;

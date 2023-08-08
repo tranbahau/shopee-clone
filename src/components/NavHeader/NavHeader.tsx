@@ -5,6 +5,7 @@ import authApi from 'src/api/auth.api';
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
 import AppContext from 'src/context/app.context';
+import { getURLImage } from 'src/utils/util';
 
 export default function NavHeader() {
   const { setIsAuthenticated, profile } = useContext(AppContext);
@@ -85,11 +86,7 @@ export default function NavHeader() {
         }
       >
         <div className='h-5 w-5 flex-shrink-0'>
-          <img
-            src='https://down-vn.img.susercontent.com/file/8fcc324015ee3e14e8c8b1e88fe7a548_tn'
-            alt='avatar'
-            className='h-full w-full rounded-full object-cover'
-          />
+          <img src={getURLImage(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
         </div>
         <div className=' pl-2 hover:cursor-pointer'>{profile?.email}</div>
       </Popover>

@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
+import config from 'src/constant/config';
 import { HttpStatusCode } from 'src/constant/http.enum';
+import { DEFAULT_IMGAGE } from 'src/constant/image.default';
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   // eslint-disable-next-line import/no-named-as-default-member
@@ -8,6 +10,9 @@ export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
 
 export function isAxiosErrorUnprocessableEntity<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity;
+}
+export function isAxiosErrorPayloadTooLarge<FormError>(error: unknown): error is AxiosError<FormError> {
+  return isAxiosError(error) && error.response?.status === HttpStatusCode.PayloadTooLarge;
 }
 
 export function formatCurrency(input: number): string {
@@ -53,3 +58,5 @@ export const getIdFromPathName = (name: string) => {
 
   return string[1];
 };
+
+export const getURLImage = (image?: string) => (image ? `${config.baseUrl}images/${image}` : DEFAULT_IMGAGE);
