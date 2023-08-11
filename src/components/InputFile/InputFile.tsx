@@ -1,4 +1,6 @@
 import { useRef } from 'react';
+import { toast } from 'react-toastify';
+import config from 'src/constant/config';
 
 interface Props {
   onChangeFile: (file?: File) => void;
@@ -14,7 +16,11 @@ export default function InputFile({ onChangeFile }: Props) {
   const handeChangeInputFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = (event.target.files as FileList)[0];
 
-    onChangeFile && onChangeFile(fileFromLocal);
+    if (fileFromLocal && (fileFromLocal.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
+      toast.error('File size: maximum 1 MB.\nFile extension: .JPEG, .PNG');
+    } else {
+      onChangeFile && onChangeFile(fileFromLocal);
+    }
   };
 
   return (
@@ -25,6 +31,10 @@ export default function InputFile({ onChangeFile }: Props) {
         accept='.jpg,.jpeg,.png'
         name='avatar'
         ref={inputFileRef}
+        onClick={(event) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (event.target as any).value = null;
+        }}
         onChange={handeChangeInputFile}
       />
       <button

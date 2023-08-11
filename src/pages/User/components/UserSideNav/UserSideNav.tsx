@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { path } from 'src/constant/path';
@@ -14,8 +15,8 @@ export default function UserSideNav() {
           <img src={getURLImage(profile?.avatar)} alt='Avatar' className='h-full w-full object-cover' />
         </Link>
         <div className='flex-grow pl-4'>
-          <div className='mb-1 truncate font-semibold text-gray-600'>cdthand</div>
-          <Link to={path.profile} className='flex items-center capitalize text-gray-500'>
+          <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name}</div>
+          <NavLink to={path.profile} className='flex items-center capitalize text-gray-500'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -31,17 +32,33 @@ export default function UserSideNav() {
               />
             </svg>
             <span>Sửa hồ sơ</span>
-          </Link>
+          </NavLink>
         </div>
       </div>
       <div className='mt-7'>
-        <NavLink to={path.profile} className=' flex items-center capitalize text-orange'>
+        <NavLink
+          to={path.profile}
+          className={({ isActive }) =>
+            classNames(' flex items-center capitalize ', {
+              'text-orange': isActive,
+              'text-gray-500': !isActive
+            })
+          }
+        >
           <div className='mr-3 h-[22px] w-[22px]'>
             <img src='https://cf.shopee.vn/file/ba61750a46794d8847c3f463c5e71cc4' alt='' className='h-full w-full' />
           </div>
           Tài khoản của tôi
         </NavLink>
-        <NavLink to={path.purchaseHistory} className='mt-4 flex items-center capitalize'>
+        <NavLink
+          to={path.purchaseHistory}
+          className={({ isActive }) =>
+            classNames('mt-4 flex items-center capitalize ', {
+              'text-orange': isActive,
+              'text-gray-500': !isActive
+            })
+          }
+        >
           <div className='mr-3 h-[22px] w-[22px]'>
             <img
               src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
@@ -51,7 +68,15 @@ export default function UserSideNav() {
           </div>
           Lịch sử mua hàng
         </NavLink>
-        <NavLink to={path.changePassword} className='mt-4 flex items-center capitalize '>
+        <NavLink
+          to={path.changePassword}
+          className={({ isActive }) =>
+            classNames('mt-4 flex items-center capitalize ', {
+              'text-orange': isActive,
+              'text-gray-500': !isActive
+            })
+          }
+        >
           <div className='mr-3 h-[22px] w-[22px]'>
             <img src='https://cf.shopee.vn/file/ba61750a46794d8847c3f463c5e71cc4' alt='' className='h-full w-full' />
           </div>
