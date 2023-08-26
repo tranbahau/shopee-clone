@@ -1,17 +1,18 @@
 import { InputHTMLAttributes, useState } from 'react';
-import type { RegisterOptions, UseFormRegister } from 'react-hook-form';
+import type { FieldPath, FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface Props<TFieldValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register?: UseFormRegister<any>;
+  register?: UseFormRegister<TFieldValues>;
   rules?: RegisterOptions;
+  name: FieldPath<TFieldValues>;
   errorMessage?: string;
   classNameError?: string;
   classNameInput?: string;
   classNameOpenEyePw?: string;
 }
 
-export default function Input({
+export default function Input<TFieldValues extends FieldValues = FieldValues>({
   autoComplete,
   errorMessage,
   register,
@@ -23,7 +24,7 @@ export default function Input({
   classNameInput = 'w-full rounded-sm border border-gray-300 p-2 outline-none focus:border-gray-500 focus:shadow-sm',
   classNameError = 'text-sm mt-1 min-h-[1.25rem] text-red-600',
   classNameOpenEyePw = 'absolute right-[5px] top-[8px] h-5 w-5'
-}: Props) {
+}: Props<TFieldValues>) {
   const registerExtends = register && name ? register(name, rules) : {};
   const [openEyePw, setOpenEyePw] = useState<boolean>(false);
 
