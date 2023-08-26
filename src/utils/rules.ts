@@ -66,6 +66,15 @@ function testPriceMinMax(this: yub.TestContext<yub.AnyObject>) {
   return price_max !== '' || price_min !== '';
 }
 
+const handleConfirmPasswordYub = (refSchema: string) => {
+  return yub
+    .string()
+    .min(6, 'Password at least 6 characters')
+    .max(120, 'Password has maximum 32 characters')
+    .required()
+    .oneOf([yub.ref(refSchema)], 'Confirm password not matched with entered password');
+};
+
 // Option 2: Use schema validation (Yub)
 export const schema = yub.object({
   email: yub
@@ -79,12 +88,7 @@ export const schema = yub.object({
     .min(6, 'Password at least 6 characters')
     .max(120, 'Password has maximum 32 characters')
     .required(),
-  confirm_password: yub
-    .string()
-    .min(6, 'Password at least 6 characters')
-    .max(120, 'Password has maximum 32 characters')
-    .required()
-    .oneOf([yub.ref('password')], 'Confirm password not matched with entered password'),
+  confirm_password: handleConfirmPasswordYub('password'),
   price_min: yub.string().test({
     name: 'price-not-allowed',
     message: 'Giá không phù hợp',
@@ -103,9 +107,9 @@ export const userSchema = yub.object({
   phone: yub.string().max(20, 'Độ dài tối đa là 20 kí tự'),
   address: yub.string().max(160, 'Độ dài tối đa là 160 kí tự'),
   date_of_birth: yub.date().max(new Date(), 'Hãy chọn một ngày trong quá khứ'),
-  password: schema.fields['password'],
-  new_password: schema.fields['password'],
-  confirm_password: schema.fields['confirm_password'],
+  password: schema.fields['password'] as yub.StringSchema<string | undefined, yub.AnyObject, undefined, ''>,
+  new_password: schema.fields['password'] as yub.StringSchema<string | undefined, yub.AnyObject, undefined, ''>,
+  confirm_password: handleConfirmPasswordYub('new_password'),
   avatar: yub.string().max(1000)
 });
 

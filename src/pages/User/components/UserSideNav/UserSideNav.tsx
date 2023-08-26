@@ -51,6 +51,20 @@ export default function UserSideNav() {
           Tài khoản của tôi
         </NavLink>
         <NavLink
+          to={path.changePassword}
+          className={({ isActive }) =>
+            classNames('mt-4 flex items-center capitalize ', {
+              'text-orange': isActive,
+              'text-gray-500': !isActive
+            })
+          }
+        >
+          <div className='mr-3 h-[22px] w-[22px]'>
+            <img src='https://cf.shopee.vn/file/ba61750a46794d8847c3f463c5e71cc4' alt='' className='h-full w-full' />
+          </div>
+          Thay đổi mật khẩu
+        </NavLink>
+        <NavLink
           to={path.purchaseHistory}
           className={({ isActive }) =>
             classNames('mt-4 flex items-center capitalize ', {
@@ -67,20 +81,6 @@ export default function UserSideNav() {
             />
           </div>
           Lịch sử mua hàng
-        </NavLink>
-        <NavLink
-          to={path.changePassword}
-          className={({ isActive }) =>
-            classNames('mt-4 flex items-center capitalize ', {
-              'text-orange': isActive,
-              'text-gray-500': !isActive
-            })
-          }
-        >
-          <div className='mr-3 h-[22px] w-[22px]'>
-            <img src='https://cf.shopee.vn/file/ba61750a46794d8847c3f463c5e71cc4' alt='' className='h-full w-full' />
-          </div>
-          Tài khoản của tôi
         </NavLink>
       </div>
     </div>

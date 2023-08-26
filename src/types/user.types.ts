@@ -11,4 +11,6 @@ export interface User {
   phone?: string;
   createdAt: string;
   updatedAt: string;
+  password?: string;
+  new_password?: string;
 }
