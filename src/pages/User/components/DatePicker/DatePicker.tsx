@@ -25,6 +25,7 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
   }, [value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // Get name select component
     const { name, value: valueFromSelect } = event.target;
 
     const newDate = {
@@ -45,8 +46,9 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
         <div className='flex justify-between'>
           <select
             defaultValue={value?.getDay() || date.date}
+            value={date.date}
             onChange={handleChange}
-            name='day'
+            name='date'
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3 hover:border-orange'
           >
             <option value='' disabled>
@@ -61,6 +63,7 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
           <select
             defaultValue={value?.getMonth() || date.month}
             onChange={handleChange}
+            value={date.month}
             name='month'
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3 hover:border-orange'
           >
@@ -76,6 +79,7 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
           <select
             defaultValue={value?.getFullYear() || date.year}
             onChange={handleChange}
+            value={date.year}
             name='year'
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3 hover:border-orange'
           >
