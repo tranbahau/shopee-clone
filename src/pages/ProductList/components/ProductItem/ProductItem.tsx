@@ -20,7 +20,7 @@ export default function ProductItem({ product }: Props) {
           />
         </div>
         <div className='overflow-hidden p-2'>
-          <div className='min-h-[1.75rem] text-sm line-clamp-2'>{product.name}</div>
+          <div className='line-clamp-2 min-h-[1.75rem] text-sm'>{product.name}</div>
           <div className='mt-3 flex items-center'>
             <div className='max-w-[50%] truncate text-gray-500 line-through'>
               <span className='text-xs'>₫</span>

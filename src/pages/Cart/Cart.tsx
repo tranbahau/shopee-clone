@@ -219,7 +219,7 @@ export default function Cart() {
                                       purchaseItem.product.name,
                                       purchaseItem.product._id
                                     )}`}
-                                    className='text-left line-clamp-2'
+                                    className='line-clamp-2 text-left'
                                   >
                                     {purchaseItem.product.name}
                                   </Link>
