@@ -94,11 +94,11 @@ export default function NavHeader() {
       )}
       {!isAuthenticated && (
         <div className='flex items-center '>
-          <Link to={path.login} className='mx-3 hover:text-white/70'>
+          <Link to={path.register} className='mx-3 hover:text-white/70'>
             Đăng kí
           </Link>
           <div className='h-4 border-r-[1px] border-r-white/40' />
-          <Link to={path.register} className='mx-3 hover:text-white/70'>
+          <Link to={path.login} className='mx-3 hover:text-white/70'>
             Đăng nhập
           </Link>
         </div>
