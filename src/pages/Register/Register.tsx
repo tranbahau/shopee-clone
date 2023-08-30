@@ -11,6 +11,7 @@ import { ErrorResponse } from 'src/types/utils.type';
 import Button from 'src/components/Button';
 import AppContext from 'src/context/app.context';
 import { useContext } from 'react';
+import { path } from 'src/constant/path';
 
 type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>;
 const registerSchema = schema.pick(['email', 'password', 'confirm_password']);
@@ -106,7 +107,7 @@ export default function Register(): React.ReactNode {
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Have an account? </span>
-                <Link className='ml-1 text-red-400' to='/login'>
+                <Link className='ml-1 text-red-400' to={path.login}>
                   Login
                 </Link>
               </div>
