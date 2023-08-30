@@ -45,8 +45,8 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
       <div className='w-[80%] pl-5'>
         <div className='flex justify-between'>
           <select
-            defaultValue={value?.getDay() || date.date}
-            value={date.date}
+            // defaultValue={value?.getDay() || date.date}
+            value={value?.getDay() || date.date}
             onChange={handleChange}
             name='date'
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3 hover:border-orange'
@@ -61,9 +61,9 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
             ))}
           </select>
           <select
-            defaultValue={value?.getMonth() || date.month}
+            // defaultValue={value?.getMonth() || date.month}
             onChange={handleChange}
-            value={date.month}
+            value={value?.getMonth() || date.month}
             name='month'
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3 hover:border-orange'
           >
@@ -77,9 +77,9 @@ export default function DatePicker({ value, onChange, errorMessage }: Props) {
             ))}
           </select>
           <select
-            defaultValue={value?.getFullYear() || date.year}
+            // defaultValue={value?.getFullYear() || date.year}
             onChange={handleChange}
-            value={date.year}
+            value={value?.getFullYear() || date.year}
             name='year'
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3 hover:border-orange'
           >

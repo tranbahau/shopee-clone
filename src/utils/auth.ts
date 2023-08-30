@@ -6,8 +6,16 @@ export const getAccessTokenFromLS = (): string => {
   return localStorage.getItem('access_token') as string;
 };
 
+export const getRefreshTokenFromLS = (): string => {
+  return localStorage.getItem('refresh_token') as string;
+};
+
 export const saveAccessTokenToLS = (access_token: string) => {
   localStorage.setItem('access_token', access_token);
+};
+
+export const saveRefreshTokenToLS = (refresh_token: string) => {
+  localStorage.setItem('refresh_token', refresh_token);
 };
 
 export const saveProfileToLS = (user: User) => {

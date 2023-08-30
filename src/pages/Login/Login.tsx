@@ -30,9 +30,9 @@ export default function Login(): React.ReactNode {
   const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onSuccess: (res: any) => {
+      onSuccess: (resp) => {
         setIsAuthenticated(true);
-        setProfile(res.data.data.user);
+        setProfile(resp.data.data.user);
         navigate('/');
       },
       onError: (error) => {

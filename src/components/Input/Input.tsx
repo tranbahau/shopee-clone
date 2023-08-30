@@ -40,7 +40,7 @@ export default function Input<TFieldValues extends FieldValues = FieldValues>({
   };
 
   return (
-    <div className={className}>
+    <div className={`${className} relative`}>
       <input
         type={handleInputType()}
         className={classNameInput}

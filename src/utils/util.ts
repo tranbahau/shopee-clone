@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 import config from 'src/constant/config';
 import { HttpStatusCode } from 'src/constant/http.enum';
 import { DEFAULT_IMGAGE } from 'src/constant/image.default';
+import { ErrorResponse } from 'src/types/utils.type';
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   // eslint-disable-next-line import/no-named-as-default-member
@@ -13,6 +14,18 @@ export function isAxiosErrorUnprocessableEntity<FormError>(error: unknown): erro
 }
 export function isAxiosErrorPayloadTooLarge<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.PayloadTooLarge;
+}
+
+export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized;
+}
+
+export function isAxiosTokenExpiresError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return (
+    isAxiosError(error) &&
+    isAxiosUnauthorizedError<ErrorResponse<{ message: string; name: string }>>(error) &&
+    error.response?.data?.data?.name === 'EXPIRED_TOKEN'
+  );
 }
 
 export function formatCurrency(input: number): string {
