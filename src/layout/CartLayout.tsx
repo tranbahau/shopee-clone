@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import CartHeader from 'src/components/CartHeader';
-import RegisterFooter from 'src/components/RegisterFooter';
+import RegisterFooter from 'src/components/Footer';
 
 interface Props {
   children: ReactNode;

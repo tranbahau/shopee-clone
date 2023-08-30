@@ -1,4 +1,4 @@
-import RegisterFooter from 'src/components/RegisterFooter';
+import RegisterFooter from 'src/components/Footer';
 import RegisterHeader from 'src/components/RegisterHeader';
 
 interface Props {
