@@ -8,7 +8,7 @@ import AppContext from 'src/context/app.context';
 import { getURLImage } from 'src/utils/util';
 
 export default function NavHeader() {
-  const { setIsAuthenticated, profile } = useContext(AppContext);
+  const { setIsAuthenticated, profile, isAuthenticated } = useContext(AppContext);
 
   const logOutAccountMutation = useMutation({
     mutationFn: authApi.logoutAccount,
@@ -60,36 +60,49 @@ export default function NavHeader() {
           <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
         </svg>
       </Popover>
-      <Popover
-        className='flex items-center py-1 hover:text-gray-300'
-        renderPopover={
-          <div>
-            <Link
-              to={path.profile}
-              className='block w-full bg-white px-3 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
-            >
-              Tài khoản của tôi
-            </Link>
-            <Link
-              to={path.purchase}
-              className='block w-full bg-white px-3 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
-            >
-              Đơn mua
-            </Link>
-            <button
-              onClick={onLogOut}
-              className='block w-full px-3 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
-            >
-              Đăng xuất
-            </button>
+      {isAuthenticated && (
+        <Popover
+          className='flex items-center py-1 hover:text-gray-300'
+          renderPopover={
+            <div>
+              <Link
+                to={path.profile}
+                className='block w-full bg-white px-3 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
+              >
+                Tài khoản của tôi
+              </Link>
+              <Link
+                to={path.purchase}
+                className='block w-full bg-white px-3 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
+              >
+                Đơn mua
+              </Link>
+              <button
+                onClick={onLogOut}
+                className='block w-full bg-white px-3 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
+              >
+                Đăng xuất
+              </button>
+            </div>
+          }
+        >
+          <div className='h-5 w-5 flex-shrink-0'>
+            <img src={getURLImage(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
-        }
-      >
-        <div className='h-5 w-5 flex-shrink-0'>
-          <img src={getURLImage(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
+          <div className=' pl-2 hover:cursor-pointer'>{profile?.email}</div>
+        </Popover>
+      )}
+      {!isAuthenticated && (
+        <div className='flex items-center '>
+          <Link to={path.login} className='mx-3 hover:text-white/70'>
+            Đăng kí
+          </Link>
+          <div className='h-4 border-r-[1px] border-r-white/40' />
+          <Link to={path.register} className='mx-3 hover:text-white/70'>
+            Đăng nhập
+          </Link>
         </div>
-        <div className=' pl-2 hover:cursor-pointer'>{profile?.email}</div>
-      </Popover>
+      )}
     </div>
   );
 }
