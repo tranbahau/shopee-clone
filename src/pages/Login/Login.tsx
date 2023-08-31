@@ -11,11 +11,13 @@ import AppContext from 'src/context/app.context';
 import Button from 'src/components/Button/Button';
 import Input from 'src/components/Input';
 import { path } from 'src/constant/path';
+import { useTranslation } from 'react-i18next';
 
 type FormData = Pick<Schema, 'password' | 'email'>;
 const loginSchema = schema.pick(['password', 'email']);
 
 export default function Login(): React.ReactNode {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setIsAuthenticated, setProfile } = useContext(AppContext);
   const {
@@ -76,7 +78,7 @@ export default function Login(): React.ReactNode {
                   type='password'
                   name='password'
                   //className='w-full rounded-sm border border-gray-300 p-2 outline-none focus:border-gray-500 focus:shadow-sm'
-                  placeholder='Password'
+                  placeholder={t('Password')}
                   autoComplete='on'
                   register={register}
                   errorMessage={errors.password?.message}
@@ -89,13 +91,13 @@ export default function Login(): React.ReactNode {
                   className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-sm uppercase text-white hover:bg-red-600'
                   isLoading={loginAccountMutation.isLoading}
                 >
-                  Log In
+                  {t('Sign in')}
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
-                <span className='text-gray-400'>New to Shopee?</span>
+                <span className='text-gray-400'>{t('New to shopee')}</span>
                 <Link className='ml-1 text-red-400' to={path.register}>
-                  Sign Up
+                  {t('Sign up')}
                 </Link>
               </div>
             </form>
